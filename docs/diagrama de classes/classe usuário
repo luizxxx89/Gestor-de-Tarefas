@@ -1,0 +1,12 @@
+Usuario
+---------------------------------
+- id: Long
+- nome: String
+- email: String
+- senha: String
+- dataCadastro: LocalDateTime
+---------------------------------
++ cadastrar()
++ login()
++ atualizarPerfil()
++ alterarSenha()
