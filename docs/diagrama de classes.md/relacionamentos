@@ -1,0 +1,12 @@
+Usuário
+   │1
+   │
+   │ possui
+   │
+   │0..*
+Tarefa
+   │
+   │ pertence
+   │
+   │1
+Categoria
