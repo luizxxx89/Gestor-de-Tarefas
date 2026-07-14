@@ -1,0 +1,14 @@
+Tarefa
+---------------------------------
+- id: Long
+- titulo: String
+- descricao: String
+- prioridade: Prioridade
+- status: Status
+- dataCriacao: LocalDateTime
+- dataLimite: LocalDate
+---------------------------------
++ criar()
++ editar()
++ excluir()
++ concluir()
