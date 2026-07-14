@@ -1,0 +1,9 @@
+Categoria
+---------------------------------
+- id: Long
+- nome: String
+- descricao: String
+---------------------------------
++ cadastrar()
++ editar()
++ excluir()
