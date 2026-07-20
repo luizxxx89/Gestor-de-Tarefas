@@ -1,0 +1,11 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente
+.env
+
+# Arquivos de build
+dist/
+
+# Cobertura de testes
+coverage/
