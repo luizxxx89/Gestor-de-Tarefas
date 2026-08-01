@@ -1,13 +1,42 @@
+
 // Importa a conexão com o banco de dados
 const db = require("../config/database");
 
-// Função responsável por inserir uma nova tarefa no banco
+// Insere uma nova tarefa
 const criarTarefa = (tarefa, callback) => {
+    const sql = `
+        INSERT INTO tasks (titulo, descricao, status)
+        VALUES (?, ?, ?)
+    `;
 
+    db.run(
+        sql,
+        [
+            tarefa.titulo,
+            tarefa.descricao,
+            tarefa.status || "Pendente"
+        ],
+        function (err) {
+            callback(err, this.lastID);
+        }
+    );
 };
 
-// Função responsável por buscar todas as tarefas
+// Busca todas as tarefas
 const buscarTodasTarefas = (callback) => {
+    const sql = `
+        SELECT *
+        FROM tasks
+        ORDER BY id DESC
+    `;
 
-};     
+    db.all(sql, [], (err, rows) => {
+        callback(err, rows);
+    });
+};
 
+// Exporta as funções
+module.exports = {
+    criarTarefa,
+    buscarTodasTarefas
+};
