@@ -3,16 +3,14 @@ const db = require("../config/database");
 
 // Cria a tabela 'tasks' caso ela não exista
 const initDatabase = () => {
-    const sql = `
-        CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT NOT NULL,
-            descricao TEXT,
-            status TEXT NOT NULL DEFAULT 'Pendente',
-            dataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-            dataAtualizacao DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    `;
+    const sql = "CREATE TABLE IF NOT EXISTS tasks (" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        "titulo TEXT NOT NULL, " +
+        "descricao TEXT, " +
+        "status TEXT NOT NULL DEFAULT 'Pendente', " +
+        "dataCriacao DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+        "dataAtualizacao DATETIME DEFAULT CURRENT_TIMESTAMP" +
+        ")";
 
     db.run(sql, (err) => {
         if (err) {
