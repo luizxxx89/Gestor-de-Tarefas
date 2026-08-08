@@ -1,10 +1,10 @@
-const taskService = require("../services/taskService");
+const taskService = require("../service/taskService");
 
 // Criar uma nova tarefa
 const criarTarefa = (req, res) => {
     const tarefa = req.body;
 
-    taskService.criarTarefa(tarefa, (err, id) => {
+    taskService.criarTarefa(tarefa, (err, tarefaCriada) => {
         if (err) {
             return res.status(500).json({
                 mensagem: "Erro ao criar tarefa.",
@@ -14,7 +14,7 @@ const criarTarefa = (req, res) => {
 
         res.status(201).json({
             mensagem: "Tarefa criada com sucesso!",
-            id: id
+            tarefa: tarefaCriada
         });
     });
 };
