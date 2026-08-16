@@ -40,3 +40,20 @@ module.exports = {
     criarTarefa,
     buscarTodasTarefas
 };
+// Buscar uma tarefa pelo ID
+const buscarTarefaPorId = (id, callback) => {
+    const sql = `
+        SELECT *
+        FROM tasks
+        WHERE id = ?
+    `;
+
+    db.get(sql, [id], (err, row) => {
+        callback(err, row);
+    });
+};
+module.exports = {
+    criarTarefa,
+    buscarTodasTarefas,
+    buscarTarefaPorId
+};

@@ -1,6 +1,6 @@
 const express = require("express");
-const HomeController = require("../controllers/HomeController");
-const taskController = require("../controllers/taskControllers");
+const HomeController = require("../controllers/HomeControllers");
+const taskController = require("../controllers/taskController");
 
 const router = express.Router();
 
@@ -9,6 +9,9 @@ router.get("/", HomeController.index);
 
 // Criar uma nova tarefa
 router.post("/tasks", taskController.criarTarefa);
+
+//buscar uma tarefa pelo ID
+router.get("/tasks/:id", taskController.buscarTarefaPorId);
 
 // Buscar todas as tarefas
 router.get("/tasks", taskController.buscarTodasTarefas);

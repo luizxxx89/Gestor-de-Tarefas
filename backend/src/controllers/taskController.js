@@ -32,8 +32,29 @@ const buscarTodasTarefas = (req, res) => {
         res.status(200).json(tarefas);
     });
 };
+// Buscar uma tarefa pelo ID
+const buscarTarefaPorId = (req, res) => {
+    const id = req.params.id;
 
+    taskService.buscarTarefaPorId(id, (err, tarefa) => {
+        if (err) {
+            return res.status(500).json({
+                mensagem: "Erro ao buscar tarefa.",
+                erro: err.message
+            });
+        }
+
+        if (!tarefa) {
+            return res.status(404).json({
+                mensagem: "Tarefa não encontrada."
+            });
+        }
+
+        res.status(200).json(tarefa);
+    });
+};
 module.exports = {
     criarTarefa,
-    buscarTodasTarefas
+    buscarTodasTarefas,
+    buscarTarefaPorId
 };

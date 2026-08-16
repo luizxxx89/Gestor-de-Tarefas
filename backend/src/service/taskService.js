@@ -9,8 +9,12 @@ const criarTarefa = (tarefa, callback) => {
 const buscarTodasTarefas = (callback) => {
     taskRepository.buscarTodasTarefas(callback);
 };
-
+// Buscar uma tarefa pelo ID
+const buscarTarefaPorId = (id, callback) => {
+    taskRepository.buscarTarefaPorId(id, callback);
+}
 module.exports = {
     criarTarefa,
-    buscarTodasTarefas
+    buscarTodasTarefas,
+    buscarTarefaPorId
 };
