@@ -1,4 +1,3 @@
-
 // Importa a conexão com o banco de dados
 const db = require("../config/database");
 
@@ -35,12 +34,7 @@ const buscarTodasTarefas = (callback) => {
     });
 };
 
-// Exporta as funções
-module.exports = {
-    criarTarefa,
-    buscarTodasTarefas
-};
-// Buscar uma tarefa pelo ID
+// Busca uma tarefa pelo ID
 const buscarTarefaPorId = (id, callback) => {
     const sql = `
         SELECT *
@@ -52,6 +46,8 @@ const buscarTarefaPorId = (id, callback) => {
         callback(err, row);
     });
 };
+
+// Exporta todas as funções do repository
 module.exports = {
     criarTarefa,
     buscarTodasTarefas,
