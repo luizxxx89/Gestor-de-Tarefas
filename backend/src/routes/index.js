@@ -16,4 +16,10 @@ router.get("/tasks/:id", taskController.buscarTarefaPorId);
 // Buscar todas as tarefas
 router.get("/tasks", taskController.buscarTodasTarefas);
 
+// Atualizar uma tarefa pelo ID
+router.put("/tasks/:id", taskController.atualizarTarefa);
+
+// Excluir uma tarefa pelo ID
+router.delete("/tasks/:id", taskController.excluirTarefa);
+
 module.exports = router;

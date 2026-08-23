@@ -46,10 +46,44 @@ const buscarTarefaPorId = (id, callback) => {
         callback(err, row);
     });
 };
+// Atualiza uma tarefa pelo ID
+const atualizarTarefa = (id, tarefa, callback) => {
+    const sql = `
+        UPDATE tasks
+        SET titulo = ?, descricao = ?, status = ?, dataAtualizacao = CURRENT_TIMESTAMP
+        WHERE id = ?
+    `;
+
+    db.run(
+        sql,
+        [
+            tarefa.titulo,
+            tarefa.descricao,
+            tarefa.status,
+            id
+        ],
+        function (err) {
+            callback(err, this.changes);
+        }
+    );
+};
+// Exclui uma tarefa pelo ID
+const excluirTarefa = (id, callback) => {
+    const sql = `
+        DELETE FROM tasks
+        WHERE id = ?
+    `;
+
+    db.run(sql, [id], function (err) {
+        callback(err, this.changes);
+    });
+};
 
 // Exporta todas as funções do repository
 module.exports = {
     criarTarefa,
     buscarTodasTarefas,
-    buscarTarefaPorId
+    buscarTarefaPorId,
+    atualizarTarefa,
+    excluirTarefa
 };

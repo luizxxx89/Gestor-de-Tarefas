@@ -53,8 +53,57 @@ const buscarTarefaPorId = (req, res) => {
         res.status(200).json(tarefa);
     });
 };
+// Atualizar uma tarefa pelo ID
+const atualizarTarefa = (req, res) => {
+    const id = req.params.id;
+    const tarefa = req.body;
+
+    taskService.atualizarTarefa(id, tarefa, (err, alteracoes) => {
+        if (err) {
+            return res.status(500).json({
+                mensagem: "Erro ao atualizar tarefa.",
+                erro: err.message
+            });
+        }
+
+        if (alteracoes === 0) {
+            return res.status(404).json({
+                mensagem: "Tarefa não encontrada."
+            });
+        }
+
+        res.status(200).json({
+            mensagem: "Tarefa atualizada com sucesso!"
+        });
+    });
+};
+// Excluir uma tarefa pelo ID
+const excluirTarefa = (req, res) => {
+    const id = req.params.id;
+
+    taskService.excluirTarefa(id, (err, alteracoes) => {
+        if (err) {
+            return res.status(500).json({
+                mensagem: "Erro ao excluir tarefa.",
+                erro: err.message
+            });
+        }
+
+        if (alteracoes === 0) {
+            return res.status(404).json({
+                mensagem: "Tarefa não encontrada."
+            });
+        }
+
+        res.status(200).json({
+            mensagem: "Tarefa excluída com sucesso!"
+        });
+    });
+};
 module.exports = {
     criarTarefa,
     buscarTodasTarefas,
-    buscarTarefaPorId
+    buscarTarefaPorId,
+    atualizarTarefa,
+    excluirTarefa
 };

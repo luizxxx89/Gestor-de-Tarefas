@@ -13,8 +13,18 @@ const buscarTodasTarefas = (callback) => {
 const buscarTarefaPorId = (id, callback) => {
     taskRepository.buscarTarefaPorId(id, callback);
 }
+// Atualizar uma tarefa
+const atualizarTarefa = (id, tarefa, callback) => {
+    taskRepository.atualizarTarefa(id, tarefa, callback);
+};
+// Excluir uma tarefa
+const excluirTarefa = (id, callback) => {
+    taskRepository.excluirTarefa(id, callback);
+};
 module.exports = {
     criarTarefa,
     buscarTodasTarefas,
-    buscarTarefaPorId
+    buscarTarefaPorId,
+    atualizarTarefa,
+    excluirTarefa
 };
