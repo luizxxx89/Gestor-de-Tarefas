@@ -1,122 +1,212 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tarefas, setTarefas] = useState([]);
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
+  const [titulo, setTitulo] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [status, setStatus] = useState("Pendente");
+
+  const [tarefaEditando, setTarefaEditando] = useState(null);
+
+  useEffect(() => {
+    buscarTarefas();
+  }, []);
+
+  // Buscar todas as tarefas
+  async function buscarTarefas() {
+    try {
+      const resposta = await fetch("http://localhost:3000/tasks");
+      const dados = await resposta.json();
+
+      setTarefas(dados);
+    } catch (erro) {
+      console.error("Erro ao buscar tarefas:", erro);
+    }
+  }
+
+  // Criar nova tarefa
+  async function criarTarefa(e) {
+    e.preventDefault();
+
+    try {
+      const resposta = await fetch("http://localhost:3000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          titulo,
+          descricao,
+          status,
+        }),
+      });
+
+      const dados = await resposta.json();
+
+      console.log(dados);
+
+      limparFormulario();
+      buscarTarefas();
+    } catch (erro) {
+      console.error("Erro ao criar tarefa:", erro);
+    }
+  }
+
+  // Iniciar edição
+  function iniciarEdicao(tarefa) {
+    setTitulo(tarefa.titulo);
+    setDescricao(tarefa.descricao);
+    setStatus(tarefa.status);
+
+    setTarefaEditando(tarefa.id);
+    setMostrarFormulario(true);
+  }
+
+  // Editar tarefa
+  async function editarTarefa(e) {
+    e.preventDefault();
+
+    try {
+      const resposta = await fetch(
+        `http://localhost:3000/tasks/${tarefaEditando}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            titulo,
+            descricao,
+            status,
+          }),
+        }
+      );
+
+      const dados = await resposta.json();
+
+      console.log(dados);
+
+      limparFormulario();
+      buscarTarefas();
+    } catch (erro) {
+      console.error("Erro ao editar tarefa:", erro);
+    }
+  }
+
+  // Limpar formulário
+  function limparFormulario() {
+    setTitulo("");
+    setDescricao("");
+    setStatus("Pendente");
+
+    setTarefaEditando(null);
+    setMostrarFormulario(false);
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+    <div className="app">
+      <header className="header">
+        <h1>Gerenciador de Tarefas</h1>
+
         <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          className="btn-nova-tarefa"
+          onClick={() => {
+            limparFormulario();
+            setMostrarFormulario(true);
+          }}
         >
-          Count is {count}
+          + Nova tarefa
         </button>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
+      <main className="conteudo">
+        {mostrarFormulario && (
+          <form
+            className="formulario"
+            onSubmit={tarefaEditando ? editarTarefa : criarTarefa}
+          >
+            <h2>
+              {tarefaEditando ? "Editar tarefa" : "Nova tarefa"}
+            </h2>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+            <input
+              type="text"
+              placeholder="Título da tarefa"
+              value={titulo}
+              onChange={(e) => setTitulo(e.target.value)}
+              required
+            />
+
+            <textarea
+              placeholder="Descrição da tarefa"
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              required
+            />
+
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="Pendente">Pendente</option>
+              <option value="Em andamento">Em andamento</option>
+              <option value="Concluída">Concluída</option>
+            </select>
+
+            <div className="botoes-formulario">
+              <button className="btn-criar" type="submit">
+                {tarefaEditando
+                  ? "Salvar alterações"
+                  : "Criar tarefa"}
+              </button>
+
+              <button
+                className="btn-cancelar"
+                type="button"
+                onClick={limparFormulario}
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        )}
+
+        <h2>Minhas tarefas</h2>
+
+        <div className="lista-tarefas">
+          {tarefas.map((tarefa) => (
+            <div className="tarefa" key={tarefa.id}>
+              <div>
+                <h3>{tarefa.titulo}</h3>
+
+                <p>{tarefa.descricao}</p>
+              </div>
+
+              <span className="status">
+                {tarefa.status}
+              </span>
+
+              <div className="acoes">
+                <button
+                  type="button"
+                  onClick={() => iniciarEdicao(tarefa)}
+                >
+                  Editar
+                </button>
+
+                <button type="button">
+                  Excluir
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
