@@ -1,135 +1,681 @@
+/* ============================================================
+   CONFIGURAÇÕES GERAIS
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+
+  background-color: #f4f6f8;
+
+  color: #333;
+}
+
+
+/* ============================================================
+   APLICAÇÃO
+   ============================================================ */
+
 .app {
   min-height: 100vh;
 }
 
+
+/* ============================================================
+   CABEÇALHO
+   ============================================================ */
+
 .header {
   background-color: #222;
+
   color: white;
+
   padding: 20px 40px;
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .header h1 {
   font-size: 24px;
 }
 
+
+/* ============================================================
+   BOTÃO NOVA TAREFA
+   ============================================================ */
+
 .btn-nova-tarefa {
   background-color: #007bff;
+
   color: white;
+
   border: none;
+
   padding: 10px 16px;
+
   border-radius: 6px;
+
   cursor: pointer;
+
+  font-size: 15px;
+
+  transition: 0.2s;
 }
+
+.btn-nova-tarefa:hover {
+  background-color: #0056b3;
+
+  transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   CONTEÚDO
+   ============================================================ */
 
 .conteudo {
   max-width: 1000px;
+
   margin: 40px auto;
+
   padding: 0 20px;
 }
 
-.conteudo h2 {
+.conteudo > h2 {
   margin-bottom: 20px;
+
+  font-size: 22px;
 }
 
-.lista-tarefas {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
 
-.tarefa {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* ============================================================
+   FORMULÁRIO
+   ============================================================ */
 
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.tarefa > div:first-child {
-  flex: 1;
-}
-
-.tarefa h3 {
-  margin-bottom: 8px;
-}
-
-.tarefa p {
-  color: #666;
-}
-
-.status {
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.acoes {
-  display: flex;
-  gap: 8px;
-}
-
-.acoes button {
-  padding: 7px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-}
 .formulario {
   background-color: white;
+
   padding: 25px;
+
   margin-bottom: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  border-radius: 10px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .formulario h2 {
   margin-bottom: 20px;
+
+  font-size: 20px;
 }
+
+
+/* Campos */
 
 .formulario input,
 .formulario textarea,
 .formulario select {
   width: 100%;
+
   padding: 12px;
+
   margin-bottom: 15px;
+
   border: 1px solid #ccc;
-  border-radius: 5px;
+
+  border-radius: 6px;
+
   font-size: 16px;
+
+  font-family: inherit;
+
+  outline: none;
+
+  transition: 0.2s;
 }
+
+
+/* Quando o campo recebe foco */
+
+.formulario input:focus,
+.formulario textarea:focus,
+.formulario select:focus {
+  border-color: #007bff;
+
+  box-shadow:
+    0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+
+/* Descrição */
 
 .formulario textarea {
   min-height: 100px;
+
   resize: vertical;
 }
 
+
+/* ============================================================
+   BOTÕES DO FORMULÁRIO
+   ============================================================ */
+
 .botoes-formulario {
   display: flex;
+
   gap: 10px;
 }
 
 .btn-criar,
 .btn-cancelar {
   padding: 10px 18px;
+
   border: none;
-  border-radius: 5px;
+
+  border-radius: 6px;
+
   cursor: pointer;
+
+  font-size: 15px;
+
+  transition: 0.2s;
 }
+
+
+/* Criar */
 
 .btn-criar {
   background-color: #28a745;
+
   color: white;
 }
 
+.btn-criar:hover {
+  background-color: #218838;
+}
+
+
+/* Cancelar */
+
 .btn-cancelar {
   background-color: #6c757d;
+
   color: white;
+}
+
+.btn-cancelar:hover {
+  background-color: #5a6268;
+}
+
+
+/* ============================================================
+   PAINEL DE RESUMO
+   ============================================================ */
+
+.resumo {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 15px;
+
+  margin-bottom: 35px;
+}
+
+
+/* Card */
+
+.card-resumo {
+  background-color: white;
+
+  padding: 20px;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+/* Nome */
+
+.card-resumo span {
+  color: #666;
+
+  font-size: 14px;
+}
+
+
+/* Número */
+
+.card-resumo strong {
+  font-size: 28px;
+
+  color: #222;
+}
+
+
+/* ============================================================
+   LISTA DE TAREFAS
+   ============================================================ */
+
+.lista-tarefas {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+/* ============================================================
+   CARD DA TAREFA
+   ============================================================ */
+
+.tarefa {
+  background-color: white;
+
+  padding: 20px;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  transition: 0.2s;
+}
+
+
+/* Efeito do mouse */
+
+.tarefa:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Área de informações */
+
+.tarefa > div:first-child {
+  flex: 1;
+}
+
+
+/* Título */
+
+.tarefa h3 {
+  margin-bottom: 8px;
+
+  font-size: 18px;
+}
+
+
+/* Descrição */
+
+.tarefa p {
+  color: #666;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+.status {
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+
+
+/* Pendente */
+
+.status-pendente {
+  background-color: #fff3cd;
+
+  color: #856404;
+}
+
+
+/* Em andamento */
+
+.status-andamento {
+  background-color: #cfe2ff;
+
+  color: #084298;
+}
+
+
+/* Concluída */
+
+.status-concluida {
+  background-color: #d1e7dd;
+
+  color: #0f5132;
+}
+
+
+/* ============================================================
+   BOTÕES DE AÇÃO
+   ============================================================ */
+
+.acoes {
+  display: flex;
+
+  gap: 8px;
+}
+
+.acoes button {
+  padding: 7px 12px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition: 0.2s;
+}
+
+
+/* Editar */
+
+.acoes button:first-child {
+  background-color: #007bff;
+
+  color: white;
+}
+
+.acoes button:first-child:hover {
+  background-color: #0056b3;
+}
+
+
+/* Excluir */
+
+.acoes button:last-child {
+  background-color: #dc3545;
+
+  color: white;
+}
+
+.acoes button:last-child:hover {
+  background-color: #b02a37;
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  /* Cabeçalho */
+
+  .header {
+    padding: 15px 20px;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    align-items: stretch;
+  }
+
+
+  /* Título */
+
+  .header h1 {
+    text-align: center;
+
+    font-size: 21px;
+  }
+
+
+  /* Botão nova tarefa */
+
+  .btn-nova-tarefa {
+    width: 100%;
+  }
+
+
+  /* Conteúdo */
+
+  .conteudo {
+    margin: 25px auto;
+
+    padding: 0 15px;
+  }
+
+
+  /* Painel de resumo */
+
+  .resumo {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+  }
+
+
+  /* Cards */
+
+  .card-resumo {
+    padding: 15px;
+  }
+
+
+  .card-resumo strong {
+    font-size: 24px;
+  }
+
+
+  /* Tarefa */
+
+  .tarefa {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+  }
+
+
+  /* Status */
+
+  .status {
+    align-self: flex-start;
+  }
+
+
+  /* Ações */
+
+  .acoes {
+    width: 100%;
+  }
+
+
+  /* Botões */
+
+  .acoes button {
+    flex: 1;
+  }
+
+
+  /* Formulário */
+
+  .botoes-formulario {
+    flex-direction: column;
+  }
+
+
+  /* Botões do formulário */
+
+  .btn-criar,
+  .btn-cancelar {
+    width: 100%;
+  }
+}
+/* ============================================================
+   FILTROS
+   ============================================================ */
+
+.filtros {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 25px;
+
+  flex-wrap: wrap;
+}
+
+
+/* Botões do filtro */
+
+.filtros button {
+  background-color: white;
+
+  color: #555;
+
+  border: 1px solid #ddd;
+
+  padding: 9px 16px;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition: 0.2s;
+}
+
+
+/* Efeito ao passar o mouse */
+
+.filtros button:hover {
+  border-color: #007bff;
+
+  color: #007bff;
+}
+
+
+/* Filtro selecionado */
+
+.filtros .filtro-ativo {
+  background-color: #007bff;
+
+  color: white;
+
+  border-color: #007bff;
+}
+
+
+/* ============================================================
+   NENHUMA TAREFA
+   ============================================================ */
+
+.nenhuma-tarefa {
+  background-color: white;
+
+  padding: 30px;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  color: #777;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE DOS FILTROS
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .filtros {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filtros button {
+    width: 100%;
+  }
+
+}
+/* ============================================================
+   PESQUISA
+   ============================================================ */
+
+.pesquisa {
+  margin-bottom: 15px;
+}
+
+.pesquisa input {
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 8px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  background-color: white;
+
+  transition: 0.2s;
+}
+
+
+/* Quando o usuário clica na pesquisa */
+
+.pesquisa input:focus {
+  border-color: #007bff;
+
+  box-shadow:
+    0 0 0 2px rgba(0, 123, 255, 0.1);
 }
