@@ -33,7 +33,7 @@ import {
 } from 'react-native';
 
 // Hook usado para controlar estados da tela
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 
 // ============================================================
@@ -110,8 +110,7 @@ export default function HomeScreen() {
   // ----------------------------------------------------------
 
   // Guarda a lista de tarefas atualmente exibida
-  const [tasks] = useState<Task[]>(INITIAL_TASKS);
-
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   // ----------------------------------------------------------
   // ESTADO DA PESQUISA
@@ -120,6 +119,15 @@ export default function HomeScreen() {
   // Guarda o texto digitado pelo usuário no campo de pesquisa
   const [search, setSearch] = useState('');
 
+  // ----------------------------------------------------------
+  // ESTADO DA NOVA TAREFA
+  // ----------------------------------------------------------
+
+  // Guarda o título digitado ao criar uma nova tarefa
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+
+  // Controla se a tela/modal de nova tarefa está aberta
+  const [showAddTask, setShowAddTask] = useState(false);
 
   // ----------------------------------------------------------
   // ESTADO DO FILTRO
@@ -129,6 +137,69 @@ export default function HomeScreen() {
   const [selectedFilter, setSelectedFilter] =
     useState<(typeof FILTERS)[number]>('Todas');
 
+  // ==========================================================
+  // CARREGAMENTO DAS TAREFAS
+  // ==========================================================
+
+  // Busca as tarefas cadastradas no backend
+  useEffect(() => {
+
+    fetch('http://localhost:3000/tasks')
+      .then((response) => response.json())
+      .then((data) => {
+        setTasks(data);
+      })
+      .catch((error) => {
+        console.error('Erro ao carregar tarefas:', error);
+      });
+
+  }, []);
+
+  // ==========================================================
+  // CRIAR NOVA TAREFA
+  // ==========================================================
+
+  // Envia uma nova tarefa para o backend
+  const addTask = () => {
+
+    // Impede salvar uma tarefa sem título
+    if (!newTaskTitle.trim()) {
+      console.log('Digite um título para a tarefa.');
+      return;
+    }
+
+    fetch('http://localhost:3000/tasks', {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+        title: newTaskTitle,
+        status: 'Pendente',
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        // Adiciona a nova tarefa na lista
+        setTasks((currentTasks) => [
+          ...currentTasks,
+          data,
+        ]);
+
+        // Limpa o campo
+        setNewTaskTitle('');
+
+        // Fecha o formulário
+        setShowAddTask(false);
+
+      })
+      .catch((error) => {
+        console.error('Erro ao criar tarefa:', error);
+      });
+  };
 
   // ==========================================================
   // FILTRAGEM DAS TAREFAS
@@ -239,8 +310,8 @@ export default function HomeScreen() {
         <Pressable
           style={styles.editButton}
           onPress={() => {
-            console.log('Editar tarefa:', item.id);
-          }}
+           console.log('Editar tarefa:', item.id);
+        }}
         >
           <Text style={styles.editButtonText}>
             Editar
@@ -251,7 +322,6 @@ export default function HomeScreen() {
     );
   };
 
-
   // ==========================================================
   // TELA
   // ==========================================================
@@ -259,6 +329,57 @@ export default function HomeScreen() {
   return (
 
     <SafeAreaView style={styles.container}>
+  {/* 
+  
+  ====================================================
+    FORMULÁRIO DE NOVA TAREFA
+  ==================================================== */}
+
+  {showAddTask && (
+    <View style={styles.addTaskContainer}>
+
+    <Text style={styles.addTaskTitle}>
+      Nova tarefa
+    </Text>
+
+    <TextInput
+      style={styles.addTaskInput}
+      placeholder="Digite o título da tarefa..."
+      placeholderTextColor="#888"
+      value={newTaskTitle}
+      onChangeText={setNewTaskTitle}
+      autoCapitalize="sentences"
+    />
+
+    <View style={styles.addTaskButtons}>
+
+      {/* Botão cancelar */}
+      <Pressable
+        style={styles.cancelButton}
+        onPress={() => {
+          setShowAddTask(false);
+          setNewTaskTitle('');
+        }}
+      >
+        <Text style={styles.cancelButtonText}>
+          Cancelar
+        </Text>
+      </Pressable>
+
+      {/* Botão salvar */}
+      <Pressable
+        style={styles.saveButton}
+        onPress={addTask}
+      >
+        <Text style={styles.saveButtonText}>
+          Salvar
+        </Text>
+      </Pressable>
+
+      </View>
+
+      </View>
+      )}
 
       {/* ====================================================
           CABEÇALHO
@@ -458,7 +579,104 @@ export default function HomeScreen() {
 // ESTILOS
 // ============================================================
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
+  // ----------------------------------------------------------
+  // FORMULÁRIO DE NOVA TAREFA
+  // ----------------------------------------------------------
+
+  addTaskContainer: {
+    backgroundColor: '#fff',
+
+    marginHorizontal: 15,
+    marginBottom: 15,
+
+    padding: 15,
+
+    borderRadius: 10,
+
+    elevation: 3,
+  },
+
+
+  addTaskTitle: {
+    fontSize: 18,
+
+    fontWeight: 'bold',
+
+    color: '#222',
+
+    marginBottom: 12,
+  },
+
+
+  addTaskInput: {
+    height: 48,
+
+    paddingHorizontal: 15,
+
+    borderRadius: 8,
+
+    backgroundColor: '#f4f6f8',
+
+    borderWidth: 1,
+    borderColor: '#ddd',
+
+    fontSize: 15,
+
+    color: '#222',
+
+    marginBottom: 12,
+  },
+
+
+  addTaskButtons: {
+    flexDirection: 'row',
+
+    justifyContent: 'flex-end',
+
+    gap: 8,
+  },
+
+
+  cancelButton: {
+    paddingVertical: 10,
+
+    paddingHorizontal: 15,
+
+    borderRadius: 8,
+
+    backgroundColor: '#eee',
+  },
+
+
+  cancelButtonText: {
+    fontSize: 13,
+
+    fontWeight: '600',
+
+    color: '#555',
+  },
+
+
+  saveButton: {
+    paddingVertical: 10,
+
+    paddingHorizontal: 18,
+
+    borderRadius: 8,
+
+    backgroundColor: '#222',
+  },
+
+
+  saveButtonText: {
+    fontSize: 13,
+
+    fontWeight: '600',
+
+    color: '#fff',
+  },
+
 
   // ----------------------------------------------------------
   // CONTAINER PRINCIPAL
