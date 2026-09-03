@@ -404,7 +404,7 @@ export default function HomeScreen() {
         <Pressable
           style={styles.addButton}
           onPress={() => {
-            console.log('Adicionar nova tarefa');
+            setShowAddTask(true);
           }}
         >
           <Text style={styles.addButtonText}>
