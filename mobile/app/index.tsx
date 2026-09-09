@@ -1,21 +1,21 @@
 ```tsx
+
 /*
 ============================================================
   GERENCIADOR DE TAREFAS - APLICATIVO MOBILE
   Arquivo: app/index.tsx
 
-  Nesta primeira versão:
+  Nesta versão:
   - Criamos a tela principal do aplicativo
   - Criamos campo de pesquisa
   - Criamos filtros por status
   - Exibimos uma lista de tarefas
   - Criamos botão para adicionar tarefa
-  - Ainda NÃO estamos conectados ao backend
+  - Iniciamos a conexão com o backend
 
-  A conexão com a API será feita em uma etapa posterior.
+  A integração com a API ainda está em desenvolvimento.
 ============================================================
 */
-
 
 // ============================================================
 // IMPORTAÇÕES
