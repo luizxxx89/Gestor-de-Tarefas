@@ -23,6 +23,14 @@ type Task = {
   status: TaskStatus;
 };
 
+// Filtros disponíveis para as tarefas
+const FILTERS = [
+  'Todas',
+  'Pendente',
+  'Em andamento',
+  'Concluída',
+] as const;
+
 export default function HomeScreen() {
 
   // Lista temporária de tarefas
@@ -39,6 +47,18 @@ export default function HomeScreen() {
     },
   ]);
 
+  // Guarda o texto digitado no campo de pesquisa
+  const [search, setSearch] = useState('');
+
+  // Guarda o filtro selecionado pelo usuário
+const [selectedFilter, setSelectedFilter] =
+  useState<(typeof FILTERS)[number]>('Todas');
+
+  // Filtra as tarefas conforme o texto pesquisado
+const filteredTasks = tasks.filter((task) =>
+  task.title.toLowerCase().includes(search.toLowerCase())
+);
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -51,11 +71,14 @@ export default function HomeScreen() {
       <TextInput
         style={styles.input}
         placeholder="Pesquisar tarefa..."
+        value={search}
+        onChangeText={setSearch}
+        autoCapitalize="none"
       />
 
       {/* Lista de tarefas */}
       <FlatList
-        data={tasks}
+        data={filteredTasks}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.taskCard}>
