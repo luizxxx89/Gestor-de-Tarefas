@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -34,7 +35,7 @@ const FILTERS = [
 export default function HomeScreen() {
 
   // Lista temporária de tarefas
-  const [tasks] = useState<Task[]>([
+  const [tasks, setTasks] = useState<Task[]>([
     {
       id: 1,
       title: 'Estudar React Native',
@@ -91,6 +92,15 @@ const filteredTasks = tasks.filter((task) =>
               Status: {item.status}
             </Text>
 
+            <TouchableOpacity
+                style={styles.statusButton}
+                onPress={() => changeStatus(item.id)}
+            >
+              <Text style={styles.statusButtonText}>
+                Alterar status
+              </Text>
+            </TouchableOpacity>
+
           </View>
         )}
       />
@@ -130,6 +140,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+  },
+
+  statusButton: {
+  marginTop: 10,
+  padding: 10,
+  borderRadius: 8,
+  alignItems: 'center',
+  borderWidth: 1,
+  },
+
+  statusButtonText: {
+  fontWeight: 'bold',
   },
 
 });
