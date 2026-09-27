@@ -140,41 +140,58 @@ const filteredTasks = tasks.filter((task) =>
   };
 
      // Altera o status da tarefa
-  const changeStatus = (id: number) => {
-    setTasks((currentTasks) =>
-      currentTasks.map((task) => {
+  const changeStatus = async (id: number) => {
 
-        // Verifica se é a tarefa que foi clicada
-        if (task.id === id) {
+  // Procura a tarefa que foi clicada
+  const task = tasks.find((item) => item.id === id);
 
-          // Pendente → Em andamento
-          if (task.status === 'Pendente') {
-            return {
-              ...task,
-              status: 'Em andamento',
-            };
+  // Se não encontrar a tarefa, encerra a função
+  if (!task) {
+    return;
+  }
+
+  // Define o próximo status
+  let newStatus: TaskStatus;
+
+  if (task.status === 'Pendente') {
+    newStatus = 'Em andamento';
+  } else if (task.status === 'Em andamento') {
+    newStatus = 'Concluída';
+  } else {
+    newStatus = 'Pendente';
+  }
+
+  // Envia a alteração para o backend
+  const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+    method: 'PUT',
+
+    headers: {
+      'Content-Type': 'application/json',
+    },
+
+    body: JSON.stringify({
+      status: newStatus,
+    }),
+  });
+
+  // Verifica se o backend respondeu corretamente
+  if (!response.ok) {
+    console.log('Erro ao atualizar o status');
+    return;
+  }
+
+  // Atualiza o status na tela
+  setTasks((currentTasks) =>
+    currentTasks.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            status: newStatus,
           }
-
-          // Em andamento → Concluída
-          if (task.status === 'Em andamento') {
-            return {
-              ...task,
-              status: 'Concluída',
-            };
-          }
-
-          // Concluída → Pendente
-          return {
-            ...task,
-            status: 'Pendente',
-          };
-        }
-
-        // Mantém as outras tarefas
-        return task;
-      })
-    );
-  };
+        : item
+    )
+  );
+};
 
   return (
     <SafeAreaView style={styles.container}>
