@@ -200,6 +200,29 @@ const filteredTasks = tasks.filter((task) =>
   );
 };
 
+  // Exclui uma tarefa pelo ID
+  const deleteTask = async (id: number) => {
+    try {
+      const response = await fetch(`${API_URL}/tasks/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const erro = await response.text();
+        console.log('Erro ao excluir tarefa:', response.status, erro);
+        return;
+      }
+
+      // Remove a tarefa da lista exibida no aplicativo
+      setTasks((currentTasks) =>
+        currentTasks.filter((item) => item.id !== id)
+      );
+
+    } catch (error) {
+      console.error('Erro ao excluir tarefa:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -260,6 +283,14 @@ const filteredTasks = tasks.filter((task) =>
               </Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteTask(item.id)}
+            >
+              <Text style={styles.deleteButtonText}>
+                Excluir tarefa
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -269,10 +300,10 @@ const filteredTasks = tasks.filter((task) =>
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#EAF4FF',
   },
 
   title: {
@@ -288,16 +319,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-    addButton: {
+  addButton: {
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     borderWidth: 1,
     marginBottom: 20,
+    backgroundColor: '#2563EB',
+    borderColor: '#2563EB',
   },
 
   addButtonText: {
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
 
   taskCard: {
@@ -305,6 +339,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#D5E3F5',
   },
 
   taskTitle: {
@@ -314,15 +350,17 @@ const styles = StyleSheet.create({
   },
 
   statusButton: {
-  marginTop: 10,
-  padding: 10,
-  borderRadius: 8,
-  alignItems: 'center',
-  borderWidth: 1,
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    backgroundColor: '#2563EB',
+    borderColor: '#2563EB',
   },
 
   statusButtonText: {
-  fontWeight: 'bold',
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
-
 });
