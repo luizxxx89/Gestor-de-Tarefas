@@ -162,7 +162,7 @@ const filteredTasks = tasks.filter((task) =>
   }
 
   // Envia a alteração para o backend
-  const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+  const response = await fetch(`${API_URL}/tasks/${id}`, {
     method: 'PUT',
 
     headers: {
@@ -175,10 +175,17 @@ const filteredTasks = tasks.filter((task) =>
   });
 
   // Verifica se o backend respondeu corretamente
-  if (!response.ok) {
-    console.log('Erro ao atualizar o status');
-    return;
-  }
+ if (!response.ok) {
+  const erro = await response.text();
+
+  console.log(
+    'Erro ao atualizar status:',
+    response.status,
+    erro
+  );
+
+  return;
+}
 
   // Atualiza o status na tela
   setTasks((currentTasks) =>

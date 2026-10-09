@@ -46,24 +46,33 @@ const buscarTarefaPorId = (id, callback) => {
         callback(err, row);
     });
 };
-// Atualiza uma tarefa pelo ID
+
+ // Atualiza uma tarefa pelo ID
 const atualizarTarefa = (id, tarefa, callback) => {
     const sql = `
         UPDATE tasks
-        SET titulo = ?, descricao = ?, status = ?, dataAtualizacao = CURRENT_TIMESTAMP
+        SET
+            titulo = COALESCE(?, titulo),
+            descricao = COALESCE(?, descricao),
+            status = COALESCE(?, status),
+            dataAtualizacao = CURRENT_TIMESTAMP
         WHERE id = ?
     `;
 
     db.run(
         sql,
         [
-            tarefa.titulo,
-            tarefa.descricao,
-            tarefa.status,
+            tarefa.titulo ?? null,
+            tarefa.descricao ?? null,
+            tarefa.status ?? null,
             id
         ],
         function (err) {
-            callback(err, this.changes);
+            if (err) {
+                return callback(err, 0);
+            }
+
+            callback(null, this.changes);
         }
     );
 };
